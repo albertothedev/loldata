@@ -47,7 +47,6 @@ const Players = (): JSX.Element => {
       <PlayersNavBar searchPlayer={(playerName: any, regionCode: any) => searchPlayer(playerName, regionCode)} />
 
       <div className="players__player">
-        {/* {player && <Details player={player} />} */}
         {player && (
           <div className="players__player__profile">
             <div className="players__player__profile__icon">
