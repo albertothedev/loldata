@@ -1,0 +1,14 @@
+@import "abstracts/variables";
+@import "abstracts/mixins";
+
+@import "base/reset";
+@import "base/typography";
+
+@import "components/modal";
+@import "components/match";
+@import "components/playersNavBar";
+@import "components/championsNavBar";
+
+@import "pages/home";
+@import "pages/champions";
+@import "pages/players";

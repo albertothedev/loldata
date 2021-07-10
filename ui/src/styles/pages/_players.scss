@@ -1,0 +1,193 @@
+.players {
+  &__player {
+    font-size: 1rem;
+    margin: auto;
+    width: 120em;
+    padding-top: 10vh;
+    color: #879292;
+
+    &__profile {
+      background-color: white;
+      padding: 2em;
+      height: 20em;
+      display: grid;
+      grid-template-rows: 4em 12em;
+      grid-template-columns: 16em 12em 18em 12em 18em auto auto auto;
+      grid-template-areas:
+        "icon name name name name name name name"
+        "icon rankedSoloImage rankedSoloData rankedFlexImage rankedFlexData championMastery1 championMastery2 championMastery3";
+
+      &__icon {
+        position: relative;
+
+        &__image {
+          width: 16em;
+        }
+
+        &__level {
+          font-size: 1.5em;
+          position: absolute;
+          background-color: #004266;
+          border: 1px solid gold;
+          top: 9.5em;
+          width: 5em;
+          text-align: center;
+          left: 3em;
+          padding: 5px 0;
+          color: white;
+        }
+      }
+
+      &__name {
+        color: $blue-darkest;
+        grid-area: name;
+        font-size: 3em;
+      }
+
+      &__rankedSoloImage {
+        grid-area: rankedSoloImage;
+        height: 100%;
+        width: 100%;
+      }
+
+      &__rankedSoloData {
+        grid-area: rankedSoloData;
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        font-size: 1.8em;
+
+        &__tierDetails {
+          color: $blue-darkest;
+        }
+      }
+
+      &__rankedFlexImage {
+        grid-area: rankedFlexImage;
+        height: 100%;
+        width: 100%;
+      }
+
+      &__rankedFlexData {
+        grid-area: rankedFlexData;
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        font-size: 1.8em;
+
+        &__tierDetails {
+          color: $blue-darkest;
+        }
+      }
+
+      &__championMastery1,
+      &__championMastery2,
+      &__championMastery3 {
+        text-align: center;
+        place-self: center;
+
+        &__icon {
+          height: 9.6em;
+          width: 9.6em;
+          position: relative;
+
+          &__image {
+            height: 9.6em;
+          }
+
+          &__level {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #004266;
+            color: white;
+            width: 1.5em;
+            height: 1.5em;
+            display: grid;
+            place-items: center;
+            font-size: 2em;
+          }
+
+          &__points {
+            padding: 5px;
+            font-size: 1.5em;
+            color: white;
+            background-color: $blue-darkest;
+          }
+        }
+
+        &__points {
+          color: $blue-darkest;
+        }
+      }
+
+      &__championMastery1 {
+        grid-area: championMastery1;
+      }
+
+      &__championMastery2 {
+        grid-area: championMastery2;
+      }
+
+      &__championMastery3 {
+        grid-area: championMastery3;
+      }
+    }
+
+    @media only screen and (max-width: 1200px) {
+      font-size: 0.8rem;
+    }
+
+    @media only screen and (max-width: 900px) {
+      font-size: 0.6rem;
+      width: 100%;
+    }
+
+    @media only screen and (max-width: 600px) {
+      &__profile {
+        background-color: white;
+        padding: 2em;
+        height: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 12em);
+        grid-template-areas:
+          "icon name championMastery1"
+          "rankedSoloImage rankedSoloData championMastery2"
+          "rankedFlexImage rankedFlexData championMastery3";
+
+        padding: 1em;
+
+        &__rankedSoloImage,
+        &__rankedFlexImage {
+          width: auto;
+        }
+
+        &__icon {
+          position: relative;
+
+          &__image {
+            width: 12em;
+          }
+
+          &__level {
+            font-size: 1.5em;
+            position: absolute;
+            background-color: #004266;
+            border: 1px solid gold;
+            top: 6.5em;
+            width: 3em;
+            text-align: center;
+            left: 2.5em;
+            padding: 2px 0;
+            color: white;
+          }
+        }
+
+        &__rankedSoloImage,
+        &__rankedFlexImage {
+        }
+      }
+    }
+  }
+}

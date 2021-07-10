@@ -1,0 +1,163 @@
+.playersNavBar {
+  font-size: 1rem;
+  background-color: #000;
+  color: #fff;
+  height: 5vh;
+  align-items: center;
+  padding: 0 2.6em;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  &__search {
+    justify-self: start;
+    display: flex;
+    height: 70%;
+
+    &__title {
+      padding-right: 0.8em;
+      font-size: 3.2em;
+      height: 100%;
+      display: grid;
+      place-items: center;
+    }
+
+    &__form {
+      display: flex;
+
+      &__player {
+        border: none;
+        height: 100%;
+        padding: 0 5px;
+        width: 8em;
+        font-size: 2em;
+      }
+
+      &__submit {
+        background-color: white;
+        cursor: pointer;
+        font-weight: 900;
+        padding: 0 5px;
+        height: 100%;
+        font-size: 2em;
+
+        &:hover {
+          background-color: $blue-darkest;
+          color: white;
+        }
+      }
+    }
+
+    &__regionSelector {
+      justify-self: end;
+      width: 5em;
+      height: 100%;
+      font-size: 2em;
+
+      &__button {
+        height: 100%;
+        width: 100%;
+        background-color: $blue-lightest;
+      }
+
+      &:hover {
+        .playersNavBar__search__regionSelector__regions {
+          height: auto;
+        }
+      }
+
+      &__regions {
+        background-color: $black;
+        position: absolute;
+        width: 5em;
+        height: 0;
+        overflow: hidden;
+        transition: all 0.3s;
+
+        &__region {
+          padding: 5px;
+          cursor: pointer;
+          height: auto;
+
+          display: grid;
+          place-items: center;
+
+          &:hover {
+            background-color: $blue-lightest;
+            color: $black;
+          }
+
+          &--active {
+            background-color: white;
+            color: black;
+          }
+
+          &__acronym {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  &__links {
+    height: 70%;
+    justify-self: center;
+    display: flex;
+
+    &__link {
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      background-color: $white;
+      width: 7em;
+      color: black;
+      text-decoration: none;
+      display: grid;
+      place-items: center;
+      font-size: 2em;
+
+      &:hover {
+        background-color: $blue-darkest;
+      }
+
+      &--active {
+        background-color: $blue-lightest;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+    font-size: 0.7rem;
+  }
+
+  @media only screen and (max-width: 900px) {
+    font-size: 0.6rem;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 0.5rem;
+    padding: 0 1rem;
+
+    display: flex;
+    justify-content: space-between;
+
+    &__search {
+      &__title {
+        display: none;
+      }
+
+      &__champion {
+        width: 8em;
+      }
+    }
+
+    &__links {
+      &__link {
+        width: 7em;
+      }
+    }
+  }
+}

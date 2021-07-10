@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  ui:
+    container_name: loldata-ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    image: loldata-ui:lts
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./ui:/app/ui
+    env_file: .env.development
+
+  api:
+    container_name: loldata-api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: loldata-api:lts
+    ports:
+      - "5004:5004"
+    volumes:
+      - ./api:/app/api
+    env_file: .env.development

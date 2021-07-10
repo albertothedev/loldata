@@ -1,0 +1,36 @@
+{
+  "languages": [
+    { "code": "zh_CN", "name": "Chinese", "region": "China" },
+    { "code": "zh_MY", "name": "Chinese", "region": "Malaysia" },
+    { "code": "zh_TW", "name": "Chinese", "region": "Taiwan" },
+    { "code": "cs_CZ", "name": "Czech", "region": "Czech Republic" },
+    { "code": "en_AU", "name": "English", "region": "Australia" },
+    {
+      "code": "en_PH",
+      "name": "English",
+      "region": "Republic of the Philippines"
+    },
+    { "code": "en_SG", "name": "English", "region": "Singapore" },
+    { "code": "en_GB", "name": "English", "region": "United Kingdom" },
+    { "code": "en_US", "name": "English", "region": "United States" },
+    { "code": "fr_FR", "name": "French", "region": "France" },
+    { "code": "de_DE", "name": "German", "region": "Germany" },
+    { "code": "el_GR", "name": "Greek", "region": "Greece" },
+    { "code": "hu_HU", "name": "Hungarian", "region": "Hungary" },
+    { "code": "id_ID", "name": "Indonesian", "region": "Indonesia" },
+    { "code": "it_IT", "name": "Italian", "region": "Italy" },
+    { "code": "ja_JP", "name": "Japanese", "region": "Japan" },
+    { "code": "ko_KR", "name": "Korean", "region": "Korea" },
+    { "code": "ms_MY", "name": "Malay", "region": "Malaysia" },
+    { "code": "pl_PL", "name": "Polish", "region": "Poland" },
+    { "code": "pt_BR", "name": "Portuguese", "region": "Brazil" },
+    { "code": "ro_RO", "name": "Romanian", "region": "Romania" },
+    { "code": "ru_RU", "name": "Russian", "region": "Russia" },
+    { "code": "es_AR", "name": "Spanish", "region": "Argentina" },
+    { "code": "es_MX", "name": "Spanish", "region": "Mexico" },
+    { "code": "es_ES", "name": "Spanish", "region": "Spain" },
+    { "code": "th_TH", "name": "Thai", "region": "Thailand" },
+    { "code": "tr_TR", "name": "Turkish", "region": "Turkey" },
+    { "code": "vn_VN", "name": "Vietnamese", "region": "Viet Nam" }
+  ]
+}

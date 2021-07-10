@@ -1,0 +1,218 @@
+.modalContainer {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  .modal {
+    width: 80%;
+    height: auto;
+    position: fixed;
+    top: 20%;
+    left: 10%;
+    color: white;
+    display: grid;
+    grid-template-columns: calc(40% - 10px) calc(60% - 10px);
+    animation-name: moveUp;
+    animation-duration: 0.3s;
+    z-index: 3;
+    padding: 20px;
+    grid-gap: 20px;
+    background-color: $black;
+    font-size: 1rem;
+
+    &__spotlight {
+      &__header {
+        height: 60px;
+
+        &__name {
+          font-size: 3.2em;
+          text-align: center;
+        }
+
+        &__title {
+          font-size: 1.9em;
+          text-align: center;
+        }
+      }
+
+      &__splashArt {
+        position: relative;
+        margin-bottom: 1em;
+
+        &:hover {
+          .modal__spotlight__splashArt__filter {
+            opacity: 1;
+          }
+        }
+
+        &__filter {
+          -webkit-box-shadow: inset 0 -30px 0 0 black;
+          box-shadow: inset 0 -30px 0 0 black;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: 9fr 1fr;
+          grid-template-areas:
+            "arrowLeft arrowRight"
+            "text text";
+          align-items: center;
+          opacity: 0;
+          transition: opacity 0.3s;
+
+          &__icon {
+            padding: 5px;
+            cursor: pointer;
+            font-size: 4.8em;
+            color: black;
+          }
+
+          #arrowLeft {
+            grid-area: arrowLeft;
+            justify-self: start;
+          }
+
+          #arrowRight {
+            grid-area: arrowRight;
+            justify-self: end;
+          }
+
+          &__skin {
+            grid-area: text;
+            justify-self: center;
+            color: $blue;
+            font-size: 1.6em;
+          }
+        }
+
+        &__image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      &__lore {
+        text-align: justify;
+        font-size: 1.4em;
+      }
+    }
+
+    &__info {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+
+      &__ability {
+        &__image {
+          float: left;
+          padding-right: 5px;
+          height: 90px;
+        }
+
+        &__header {
+          display: flex;
+          justify-content: space-between;
+          font-size: 1.4em;
+
+          &__title {
+            padding-bottom: 5px;
+            color: $blue;
+            font-size: 1.1em;
+          }
+
+          &__cooldown {
+            color: $blue-lightest;
+            font-size: 1.1em;
+          }
+        }
+
+        &__description {
+          text-align: justify;
+          font-size: 1.4em;
+          width: 100%;
+        }
+      }
+
+      &__stats {
+        grid-area: stats;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.4em;
+
+        &__icon {
+          width: 20px;
+          height: auto;
+        }
+
+        &__value {
+          &:not(:last-child) {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+    &__close {
+      display: none;
+    }
+
+    @media only screen and (max-width: 900px) {
+      width: 95%;
+      left: 2.5%;
+      font-size: 0.8rem;
+    }
+
+    @media only screen and (max-width: 600px) {
+      top: 0;
+      left: 0;
+      width: 100%;
+      overflow-y: scroll;
+      display: initial;
+      height: 100%;
+
+      &__spotlight__lore {
+        margin-bottom: 10px;
+      }
+
+      &__info__ability {
+        margin-bottom: 10px;
+      }
+
+      &__info__stats {
+        margin-bottom: 10px;
+      }
+
+      &__close {
+        width: 5em;
+        padding: 5px;
+        font-size: 1.1em;
+        display: grid;
+        place-items: center;
+        margin: auto;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    height: auto;
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    top: 100%;
+    opacity: 0;
+  }
+
+  100% {
+    top: 20%;
+    opacity: 1;
+  }
+}

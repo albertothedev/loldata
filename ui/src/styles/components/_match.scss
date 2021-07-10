@@ -1,0 +1,615 @@
+.match {
+  font-size: 1rem;
+  margin: 20px 0;
+  background-color: white;
+  width: 100%;
+  padding: 2em;
+  color: #879292;
+
+  &__matchResult {
+    text-align: center;
+
+    &--victory,
+    &--defeat {
+      color: white;
+      padding: 5px 0;
+      width: 20%;
+      margin: 0 auto 10px auto;
+    }
+
+    &--victory {
+      background-color: green;
+    }
+
+    &--defeat {
+      background-color: red;
+    }
+  }
+
+  &__player {
+    font-size: 1.5em;
+    height: 8em;
+    width: 100%;
+    position: relative;
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-rows: 25% 25% 25% 25%;
+    grid-template-columns: 8em repeat(5, auto) 4em repeat(3, 4em) 4em repeat(3, 2em);
+    grid-template-areas:
+      "champion time KDA CS vision damage spell1 item1 item2 item3 . primaryPerk1 secondaryPerk1 statPerk1"
+      "champion matchDuration KDAData CSTotal visionScore damageDealt spell1 item1 item2 item3 trinket primaryPerk2 secondaryPerk2 statPerk2"
+      "champion matchDate KDARatio CSPerMinute visionData damageTaken spell2 item4 item5 item6 trinket primaryPerk3 . statPerk3"
+      "champion . . . . . spell2 item4 item5 item6 . primaryPerk4 . .";
+
+    &__champion {
+      grid-area: champion;
+      position: relative;
+
+      &__image {
+        height: 100%;
+        width: 100%;
+      }
+
+      &__level {
+        position: absolute;
+        background: #004266;
+        color: white;
+        display: grid;
+        place-items: center;
+        width: 2em;
+        height: 2em;
+        top: calc(100% - 2em);
+        left: calc(100% - 2em);
+      }
+    }
+
+    &__header--time,
+    &__matchDuration,
+    &__matchDate,
+    &__header--KDA,
+    &__KDAData,
+    &__KDARatio,
+    &__header--CS,
+    &__CSTotal,
+    &__CSPerMinute,
+    &__header--vision,
+    &__visionScore,
+    &__visionData,
+    &__header--damage,
+    &__damageDealt,
+    &__damageTaken {
+      align-self: center;
+      justify-self: center;
+    }
+
+    &__header {
+      color: black;
+
+      &--time {
+        grid-area: time;
+      }
+
+      &--KDA {
+        grid-area: KDA;
+      }
+
+      &--CS {
+        grid-area: CS;
+      }
+
+      &--vision {
+        grid-area: vision;
+      }
+
+      &--damage {
+        grid-area: damage;
+      }
+    }
+
+    &__matchDuration {
+      grid-area: matchDuration;
+    }
+
+    &__matchDate {
+      grid-area: matchDate;
+    }
+
+    &__KDAData {
+      grid-area: KDAData;
+    }
+
+    &__KDARatio {
+      grid-area: KDARatio;
+    }
+
+    &__CSTotal {
+      grid-area: CSTotal;
+    }
+
+    &__CSPerMinute {
+      grid-area: CSPerMinute;
+    }
+
+    &__visionScore {
+      grid-area: visionScore;
+    }
+
+    &__visionData {
+      grid-area: visionData;
+    }
+
+    &__damageDealt {
+      grid-area: damageDealt;
+    }
+
+    &__damageTaken {
+      grid-area: damageTaken;
+    }
+
+    &__spell1,
+    &__spell2,
+    &__item1,
+    &__item2,
+    &__item3,
+    &__item4,
+    &__item5,
+    &__item6,
+    &__trinket,
+    &__primaryPerk1,
+    &__primaryPerk2,
+    &__primaryPerk3,
+    &__primaryPerk4,
+    &__secondaryPerk1,
+    &__secondaryPerk2,
+    &__statPerk1,
+    &__statPerk2,
+    &__statPerk3 {
+      height: 100%;
+      width: 100%;
+
+      &--missing {
+        background: radial-gradient(circle, rgba(105, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 100%);
+      }
+    }
+
+    &__spell1 {
+      grid-area: spell1;
+    }
+
+    &__spell2 {
+      grid-area: spell2;
+    }
+
+    &__item1 {
+      grid-area: item1;
+    }
+
+    &__item2 {
+      grid-area: item2;
+    }
+
+    &__item3 {
+      grid-area: item3;
+    }
+
+    &__item4 {
+      grid-area: item4;
+    }
+
+    &__item5 {
+      grid-area: item5;
+    }
+
+    &__item6 {
+      grid-area: item6;
+    }
+
+    &__trinket {
+      grid-area: trinket;
+    }
+
+    &__primaryPerk1 {
+      grid-area: primaryPerk1;
+    }
+
+    &__primaryPerk2 {
+      grid-area: primaryPerk2;
+    }
+
+    &__primaryPerk3 {
+      grid-area: primaryPerk3;
+    }
+
+    &__primaryPerk4 {
+      grid-area: primaryPerk4;
+    }
+
+    &__secondaryPerk1 {
+      grid-area: secondaryPerk1;
+    }
+
+    &__secondaryPerk2 {
+      grid-area: secondaryPerk2;
+    }
+
+    &__statPerk1 {
+      grid-area: statPerk1;
+    }
+
+    &__statPerk2 {
+      grid-area: statPerk2;
+    }
+
+    &__statPerk3 {
+      grid-area: statPerk3;
+    }
+  }
+
+  &__teams {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+
+    &__team {
+      width: calc(50% - 10px);
+      height: 100%;
+
+      &__stats {
+        display: flex;
+        justify-content: space-between;
+        background-color: black;
+        padding: 5px;
+        margin-bottom: 5px;
+        font-size: 2em;
+
+        &__stat {
+          display: flex;
+          align-items: center;
+
+          &__tower__image,
+          &__inhibitor__image,
+          &__herald__image,
+          &__dragon__image,
+          &__baron__image {
+            height: 20px;
+          }
+
+          &__bans {
+            display: flex;
+            height: 20px;
+
+            &__ban {
+              position: relative;
+
+              &__image {
+                width: 20px;
+                height: 20px;
+              }
+
+              &__filter {
+                position: absolute;
+                color: red;
+                top: 0;
+                width: 20px;
+                height: 20px;
+                text-align: center;
+                font-weight: 100;
+                font-size: 2em;
+              }
+            }
+          }
+        }
+      }
+
+      &__participants {
+        display: grid;
+        grid-template-rows: repeat(5, 60px);
+        grid-auto-flow: column;
+        grid-template-columns: calc(50% - 10px) calc(50% - 10px);
+        grid-gap: 10px 20px;
+
+        &__participant {
+          color: #879292;
+          height: 60px;
+          width: auto;
+          display: grid;
+          grid-template-rows: 25% 25% 25% 25%;
+          grid-template-columns:
+            60px repeat(4, auto) 30px repeat(3, 30px)
+            30px repeat(3, 15px);
+          grid-template-areas:
+            "champion name name name name spell1 item1 item2 item3 . primaryPerk1 secondaryPerk1 statPerk1"
+            "champion KDA CS vision damage spell1 item1 item2 item3 trinket primaryPerk2 secondaryPerk2 statPerk2"
+            "champion KDAData CSTotal visionScore damageDealt spell2 item4 item5 item6 trinket primaryPerk3 . statPerk3"
+            "champion KDARatio CSPerMinute visionData damageTaken spell2 item4 item5 item6 . primaryPerk4 . .";
+
+          &:not(:last-child) {
+            margin-bottom: 10px;
+          }
+
+          &__champion {
+            grid-area: champion;
+            position: relative;
+
+            &__image {
+              width: 60px;
+              height: 60px;
+            }
+
+            &__level {
+              position: absolute;
+              background: $blue-darkest;
+              left: 40px;
+              top: 40px;
+              color: white;
+              width: 20px;
+              height: 20px;
+              display: grid;
+              place-items: center;
+            }
+          }
+
+          &__name {
+            grid-area: name;
+            align-self: center;
+            color: $blue-darkest;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5px;
+
+            &__firstBlood {
+              color: red;
+            }
+          }
+
+          &__header--KDA,
+          &__KDAData,
+          &__KDARatio,
+          &__header--CS,
+          &__CSTotal,
+          &__CSPerMinute,
+          &__header--vision,
+          &__visionScore,
+          &__visionData,
+          &__header--damage,
+          &__damageDealt,
+          &__damageTaken {
+            align-self: center;
+            justify-self: center;
+          }
+
+          &__header {
+            color: black;
+
+            &--KDA {
+              grid-area: KDA;
+            }
+
+            &--CS {
+              grid-area: CS;
+            }
+
+            &--vision {
+              grid-area: vision;
+            }
+
+            &--damage {
+              grid-area: damage;
+            }
+          }
+
+          &__KDAData {
+            grid-area: KDAData;
+          }
+
+          &__KDARatio {
+            grid-area: KDARatio;
+          }
+
+          &__CSTotal {
+            grid-area: CSTotal;
+          }
+
+          &__CSPerMinute {
+            grid-area: CSPerMinute;
+          }
+
+          &__visionScore {
+            grid-area: visionScore;
+          }
+
+          &__visionData {
+            grid-area: visionData;
+          }
+
+          &__damageDealt {
+            grid-area: damageDealt;
+          }
+
+          &__damageTaken {
+            grid-area: damageTaken;
+          }
+
+          &__spell1,
+          &__spell2,
+          &__item1,
+          &__item2,
+          &__item3,
+          &__item4,
+          &__item5,
+          &__item6,
+          &__trinket,
+          &__primaryPerk1,
+          &__primaryPerk2,
+          &__primaryPerk3,
+          &__primaryPerk4,
+          &__secondaryPerk1,
+          &__secondaryPerk2,
+          &__statPerk1,
+          &__statPerk2,
+          &__statPerk3 {
+            height: 100%;
+            width: 100%;
+
+            &--missing {
+              background: radial-gradient(circle, rgba(105, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 100%);
+            }
+          }
+
+          &__spell1 {
+            grid-area: spell1;
+          }
+
+          &__spell2 {
+            grid-area: spell2;
+          }
+
+          &__item1 {
+            grid-area: item1;
+          }
+
+          &__item2 {
+            grid-area: item2;
+          }
+
+          &__item3 {
+            grid-area: item3;
+          }
+
+          &__item4 {
+            grid-area: item4;
+          }
+
+          &__item5 {
+            grid-area: item5;
+          }
+
+          &__item6 {
+            grid-area: item6;
+          }
+
+          &__trinket {
+            grid-area: trinket;
+          }
+
+          &__primaryPerk1 {
+            grid-area: primaryPerk1;
+          }
+
+          &__primaryPerk2 {
+            grid-area: primaryPerk2;
+          }
+
+          &__primaryPerk3 {
+            grid-area: primaryPerk3;
+          }
+
+          &__primaryPerk4 {
+            grid-area: primaryPerk4;
+          }
+
+          &__secondaryPerk1 {
+            grid-area: secondaryPerk1;
+          }
+
+          &__secondaryPerk2 {
+            grid-area: secondaryPerk2;
+          }
+
+          &__statPerk1 {
+            grid-area: statPerk1;
+          }
+
+          &__statPerk2 {
+            grid-area: statPerk2;
+          }
+
+          &__statPerk3 {
+            grid-area: statPerk3;
+          }
+        }
+      }
+    }
+
+    @media only screen and (max-width: 900px) {
+      display: initial;
+
+      &__team {
+        width: 100%;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+    font-size: 0.8rem;
+
+    &__player {
+      height: 10em;
+      grid-template-columns:
+        10em repeat(5, auto) 5em repeat(3, 5em)
+        5em repeat(3, 2.5em);
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    padding: 1em;
+    &__player {
+      font-size: 1em;
+      height: 21em;
+      grid-template-rows: 3em 3em 3em;
+      grid-template-rows: repeat(3, 3em) repeat(3, 4em);
+      grid-template-columns: 9em repeat(7, 4em);
+      grid-template-areas:
+        "champion time time KDA CS vision damage ."
+        "champion matchDuration matchDuration KDAData CSTotal visionScore damageDealt spell1"
+        "champion matchDate matchDate KDARatio CSPerMinute visionData damageTaken spell2"
+        "trinket . . . primaryPerk1 primaryPerk2 primaryPerk3 primaryPerk4"
+        "trinket item1 item2 item3 secondaryPerk1 secondaryPerk2 . ."
+        "trinket item4 item5 item6 statPerk1 statPerk2 statPerk3 .";
+      justify-content: space-between;
+    }
+
+    &__teams {
+      &__team {
+        &:first-child {
+          margin-bottom: 10px;
+        }
+        &__participants {
+          &__participant {
+            color: #879292;
+            height: 50px;
+            width: auto;
+            display: grid;
+            grid-template-rows: 25% 25% 25% 25%;
+            grid-template-columns: 50px repeat(4, auto) 25px repeat(3, 25px) 25px repeat(3, 12.5px);
+            grid-template-areas:
+              "champion name name name name spell1 item1 item2 item3 . primaryPerk1 secondaryPerk1 statPerk1"
+              "champion KDA CS vision damage spell1 item1 item2 item3 trinket primaryPerk2 secondaryPerk2 statPerk2"
+              "champion KDAData CSTotal visionScore damageDealt spell2 item4 item5 item6 trinket primaryPerk3 . statPerk3"
+              "champion KDARatio CSPerMinute visionData damageTaken spell2 item4 item5 item6 . primaryPerk4 . .";
+
+            &__champion {
+              &__image {
+                width: 50px;
+                height: 50px;
+              }
+
+              &__level {
+                position: absolute;
+                background: #004266;
+                left: 35px;
+                top: 35px;
+                color: white;
+                width: 15px;
+                height: 15px;
+                display: grid;
+                place-items: center;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

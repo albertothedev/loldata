@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "start": "pm2 start build/index.js --name 'loldata'",
+    "build": "tsc",
+    "dev": "nodemon ./src/index.ts"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.11",
+    "@types/node": "^15.0.1",
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "ts-node-dev": "^1.1.6",
+    "pm2": "^4.5.6",
+    "typescript": "^4.2.4"
+  }
+}
