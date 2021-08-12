@@ -39,34 +39,23 @@ const PlayersNavBar = ({ searchPlayer }: PlayersNavBarProps): JSX.Element => {
             searchPlayer(e.target[0].value, region.code);
           }}
         >
-          <input
-            className="playersNavBar__search__form__player"
-            type="text"
-            placeholder="Search"
-            name="player"
-          />
+          <input className="playersNavBar__search__form__player" type="text" placeholder="Search" name="player" required />
 
           <button className="playersNavBar__search__form__submit">GO</button>
         </form>
 
         <div className="playersNavBar__search__regionSelector">
-          <button className="playersNavBar__search__regionSelector__button">
-            {region.acronym}
-          </button>
+          <button className="playersNavBar__search__regionSelector__button">{region.acronym}</button>
           <ul className="playersNavBar__search__regionSelector__regions">
             {regions.map((region2: any, index: any) => (
               <li
                 className={`playersNavBar__search__regionSelector__regions__region ${
-                  region2.code === region.code
-                    ? "playersNavBar__search__regionSelector__regions__region--active"
-                    : ""
+                  region2.code === region.code ? "playersNavBar__search__regionSelector__regions__region--active" : ""
                 }`}
                 key={index}
                 onClick={() => dispatch(setRegion(region2))}
               >
-                <span className="playersNavBar__search__regionSelector__regions__region__acronym">
-                  {region2.acronym}
-                </span>
+                <span className="playersNavBar__search__regionSelector__regions__region__acronym">{region2.acronym}</span>
               </li>
             ))}
           </ul>
