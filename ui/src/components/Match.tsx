@@ -198,15 +198,17 @@ const Match = ({ match }: MatchProps): JSX.Element => {
 
               {team.bans && team.bans.length ? (
                 <div className="match__teams__team__stats__stat__bans">
-                  {team.bans.map((ban: any, index: number) => (
-                    <div className="match__teams__team__stats__stat__bans__ban" key={index}>
-                      <img
-                        className="match__teams__team__stats__stat__bans__ban__image"
-                        src={`https://cdn.communitydragon.org/latest/champion/${ban.championId}/square`}
-                      />
-                      <div className="match__teams__team__stats__stat__bans__ban__filter">X</div>
-                    </div>
-                  ))}
+                  {team.bans.map((ban: any, index: number) =>
+                    ban.championId !== -1 ? (
+                      <div className="match__teams__team__stats__stat__bans__ban" key={index}>
+                        <img
+                          className="match__teams__team__stats__stat__bans__ban__image"
+                          src={`https://cdn.communitydragon.org/latest/champion/${ban.championId}/square`}
+                        />
+                        <div className="match__teams__team__stats__stat__bans__ban__filter">X</div>
+                      </div>
+                    ) : null
+                  )}
                 </div>
               ) : null}
             </div>
