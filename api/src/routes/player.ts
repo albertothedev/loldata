@@ -54,17 +54,30 @@ module.exports = (app: express.Application) =>
           .then((res: AxiosResponse) => (player.championMastery = res.data.slice(0, 3)))
           .catch((error: AxiosError) => console.error(error));
 
+        let regionName: "americas" | "europe" | "asia" | null = null;
+
+        switch (req.body.regionCode) {
+          case "oc1" || "na1" || "br1" || "la1" || "la2":
+            regionName = "americas";
+            break;
+
+          case "euw1" || "eun1" || "ru" || "tr1":
+            regionName = "europe";
+            break;
+
+          case "jp1" || "kr":
+            regionName = "asia";
+            break;
+        }
+
         axios
-          .get(
-            `https://${req.body.regionCode}.api.riotgames.com/lol/match/v4/matchlists/by-account/${player.accountId}?endIndex=${maxMatches}`,
-            config
-          )
+          .get(`https://${regionName}.api.riotgames.com/lol/match/v5/matches/by-puuid/${player.puuid}/ids?count=${maxMatches}`, config)
           .then((res: AxiosResponse) => {
             let indexExample = 0;
 
-            res.data.matches.forEach(async (match: any, index: any) => {
+            res.data.forEach(async (match: any, index: any) => {
               await axios
-                .get(`https://${req.body.regionCode}.api.riotgames.com/lol/match/v4/matches/${match.gameId}`, config)
+                .get(`https://${regionName}.api.riotgames.com/lol/match/v5/matches/${match}`, config)
                 .then((res2: AxiosResponse) => {
                   indexExample++;
 
@@ -73,126 +86,122 @@ module.exports = (app: express.Application) =>
                     platformId: match.platformId,
                     queue: match.queue,
                     season: match.season,
-                    timestamp: match.timestamp,
-                    gameType: res2.data.gameType,
-                    gameDuration: res2.data.gameDuration,
-                    mapId: res2.data.mapId,
-                    gameMode: res2.data.gameMode,
+                    timestamp: res2.data.info.gameCreation,
+                    gameType: res2.data.info.gameType,
+                    gameDuration: res2.data.info.gameDuration / 1000,
+                    mapId: res2.data.info.mapId,
+                    gameMode: res2.data.info.gameMode,
                     teams: [
                       {
-                        inhibitorKills: res2.data.teams[0].inhibitorKills,
-                        towerKills: res2.data.teams[0].towerKills,
-                        riftHeraldKills: res2.data.teams[0].riftHeraldKills,
-                        dragonKills: res2.data.teams[0].dragonKills,
-                        baronKills: res2.data.teams[0].baronKills,
-                        teamId: res2.data.teams[0].teamId,
-                        bans: res2.data.teams[0].bans,
+                        inhibitorKills: res2.data.info.teams[0].inhibitorKills,
+                        towerKills: res2.data.info.teams[0].towerKills,
+                        riftHeraldKills: res2.data.info.teams[0].riftHeraldKills,
+                        dragonKills: res2.data.info.teams[0].dragonKills,
+                        baronKills: res2.data.info.teams[0].baronKills,
+                        teamId: res2.data.info.teams[0].teamId,
+                        bans: res2.data.info.teams[0].bans,
                         participants: [],
                       },
                       {
-                        inhibitorKills: res2.data.teams[1].inhibitorKills,
-                        towerKills: res2.data.teams[1].towerKills,
-                        riftHeraldKills: res2.data.teams[1].riftHeraldKills,
-                        dragonKills: res2.data.teams[1].dragonKills,
-                        baronKills: res2.data.teams[1].baronKills,
-                        teamId: res2.data.teams[1].teamId,
-                        bans: res2.data.teams[1].bans,
+                        inhibitorKills: res2.data.info.teams[1].inhibitorKills,
+                        towerKills: res2.data.info.teams[1].towerKills,
+                        riftHeraldKills: res2.data.info.teams[1].riftHeraldKills,
+                        dragonKills: res2.data.info.teams[1].dragonKills,
+                        baronKills: res2.data.info.teams[1].baronKills,
+                        teamId: res2.data.info.teams[1].teamId,
+                        bans: res2.data.info.teams[1].bans,
                         participants: [],
                       },
                     ],
                     participants: [],
                   };
 
-                  res2.data.participants.forEach((participant: any, index2: any) => {
-                    if (res2.data.participantIdentities[index2].player.summonerName === player.name) {
+                  res2.data.info.participants.forEach((participant: any, index2: any) => {
+                    if (participant.summonerName === player.name) {
                       matchObject.playerStats = {
-                        role: match.role,
-                        championId: match.champion,
-                        lane: match.lane,
-                        kills: participant.stats.kills,
-                        assists: participant.stats.assists,
-                        deaths: participant.stats.deaths,
-                        championLevel: participant.stats.champLevel,
-                        trinket: participant.stats.item6,
-                        CS: participant.stats.totalMinionsKilled + participant.stats.neutralMinionsKilled,
-                        perkPrimaryStyle: participant.stats.perkPrimaryStyle,
-                        totalDamageTaken: participant.stats.totalDamageTaken,
-                        totalDamageDealtToChampions: participant.stats.totalDamageDealtToChampions,
-                        totalHeal: participant.stats.totalHeal,
-                        wardsKilled: participant.stats.wardsKilled,
-                        wardsPlaced: participant.stats.wardsPlaced,
-                        visionWardsBoughtInGame: participant.stats.visionWardsBoughtInGame,
-                        sightWardsBoughtInGame: participant.stats.sightWardsBoughtInGame,
-                        visionScore: participant.stats.visionScore,
-                        summonerSpellIds: [participant.spell1Id, participant.spell2Id],
-                        itemIds: [
-                          participant.stats.item0,
-                          participant.stats.item1,
-                          participant.stats.item2,
-                          participant.stats.item3,
-                          participant.stats.item4,
-                          participant.stats.item5,
+                        role: participant.role,
+                        championId: participant.championId,
+                        lane: participant.lane,
+                        kills: participant.kills,
+                        assists: participant.assists,
+                        deaths: participant.deaths,
+                        championLevel: participant.champLevel,
+                        trinket: participant.item6,
+                        CS: participant.totalMinionsKilled + participant.neutralMinionsKilled,
+                        totalDamageTaken: participant.totalDamageTaken,
+                        totalDamageDealtToChampions: participant.totalDamageDealtToChampions,
+                        totalHeal: participant.totalHeal,
+                        wardsKilled: participant.wardsKilled,
+                        wardsPlaced: participant.wardsPlaced,
+                        visionWardsBoughtInGame: participant.visionWardsBoughtInGame,
+                        sightWardsBoughtInGame: participant.sightWardsBoughtInGame,
+                        visionScore: participant.visionScore,
+                        summonerSpellIds: [participant.summoner1Id, participant.summoner2Id],
+                        itemIds: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
+                        perkPrimaryStyle: participant.perks.styles[0].style,
+                        perkSecondaryStyle: participant.perks.styles[1].style,
+                        statPerkIds: [participant.perks.statPerks.offense, participant.perks.statPerks.flex, participant.perks.statPerks.defense],
+                        primaryPerkIds: [
+                          participant.perks.styles[0].selections[0].perk,
+                          participant.perks.styles[0].selections[1].perk,
+                          participant.perks.styles[0].selections[2].perk,
+                          participant.perks.styles[0].selections[3].perk,
                         ],
-                        perkSecondaryStyle: participant.stats.perkSubStyle,
-                        statPerkIds: [participant.stats.statPerk0, participant.stats.statPerk1, participant.stats.statPerk2],
-                        primaryPerkIds: [participant.stats.perk0, participant.stats.perk1, participant.stats.perk2, participant.stats.perk3],
-                        secondaryPerkIds: [participant.stats.perk4, participant.stats.perk5],
-                        goldEarned: participant.stats.goldEarned,
-                        neutralMinionsKilled: participant.stats.neutralMinionsKilled,
-                        totalMinionsKilled: participant.stats.totalMinionsKilled,
-                        firstBlood: participant.stats.firstBloodKill,
+                        secondaryPerkIds: [participant.perks.styles[1].selections[0].perk, participant.perks.styles[1].selections[1].perk],
+                        goldEarned: participant.goldEarned,
+                        neutralMinionsKilled: participant.neutralMinionsKilled,
+                        totalMinionsKilled: participant.totalMinionsKilled,
+                        firstBlood: participant.firstBloodKill,
                       };
 
-                      matchObject.win = participant.stats.win;
+                      matchObject.win = participant.win;
                     }
 
                     matchObject.teams[participant.teamId === 100 ? 0 : 1].participants.push({
                       participantId: participant.participantId,
-                      profileIcon: res2.data.participantIdentities[index2].player.profileIcon,
-                      accountId: res2.data.participantIdentities[index2].player.accountId,
-                      matchHistoryUri: res2.data.participantIdentities[index2].player.matchHistoryUri,
-                      currentAccountId: res2.data.participantIdentities[index2].player.currentAccountId,
-                      currentPlatformId: res2.data.participantIdentities[index2].player.currentPlatformId,
-                      summonerName: res2.data.participantIdentities[index2].player.summonerName,
-                      summonerId: res2.data.participantIdentities[index2].player.summonerId,
-                      platformId: res2.data.participantIdentities[index2].player.platformId,
+                      profileIcon: participant.profileIcon,
+                      accountId: participant.accountId,
+                      matchHistoryUri: participant.matchHistoryUri,
+                      currentAccountId: participant.currentAccountId,
+                      currentPlatformId: participant.currentPlatformId,
+                      summonerName: participant.summonerName,
+                      summonerId: participant.summonerId,
+                      platformId: participant.platformId,
                       championId: participant.championId,
                       teamId: participant.teamId,
                       highestAchievedSeasonTier: participant.highestAchievedSeasonTier,
                       runes: participant.runes,
                       masteries: participant.masteries,
-                      summonerSpellIds: [participant.spell1Id, participant.spell2Id],
-                      kills: participant.stats.kills,
-                      deaths: participant.stats.deaths,
-                      assists: participant.stats.assists,
-                      championLevel: participant.stats.champLevel,
-                      itemIds: [
-                        participant.stats.item0,
-                        participant.stats.item1,
-                        participant.stats.item2,
-                        participant.stats.item3,
-                        participant.stats.item4,
-                        participant.stats.item5,
+                      summonerSpellIds: [participant.summoner1Id, participant.summoner2Id],
+                      kills: participant.kills,
+                      deaths: participant.deaths,
+                      assists: participant.assists,
+                      championLevel: participant.champLevel,
+                      itemIds: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5],
+                      trinket: participant.item6,
+                      CS: participant.totalMinionsKilled + participant.neutralMinionsKilled,
+                      perkPrimaryStyle: participant.perks.styles[0].style,
+                      perkSecondaryStyle: participant.perks.styles[1].style,
+                      statPerkIds: [participant.perks.statPerks.offense, participant.perks.statPerks.flex, participant.perks.statPerks.defense],
+                      primaryPerkIds: [
+                        participant.perks.styles[0].selections[0].perk,
+                        participant.perks.styles[0].selections[1].perk,
+                        participant.perks.styles[0].selections[2].perk,
+                        participant.perks.styles[0].selections[3].perk,
                       ],
-                      trinket: participant.stats.item6,
-                      CS: participant.stats.totalMinionsKilled + participant.stats.neutralMinionsKilled,
-                      perkPrimaryStyle: participant.stats.perkPrimaryStyle,
-                      perkSecondaryStyle: participant.stats.perkSubStyle,
-                      statPerkIds: [participant.stats.statPerk0, participant.stats.statPerk1, participant.stats.statPerk2],
-                      primaryPerkIds: [participant.stats.perk0, participant.stats.perk1, participant.stats.perk2, participant.stats.perk3],
-                      secondaryPerkIds: [participant.stats.perk4, participant.stats.perk5],
-                      goldEarned: participant.stats.goldEarned,
-                      totalDamageTaken: participant.stats.totalDamageTaken,
-                      neutralMinionsKilled: participant.stats.neutralMinionsKilled,
-                      wardsKilled: participant.stats.wardsKilled,
-                      wardsPlaced: participant.stats.wardsPlaced,
-                      totalDamageDealtToChampions: participant.stats.totalDamageDealtToChampions,
-                      totalMinionsKilled: participant.stats.totalMinionsKilled,
-                      visionWardsBoughtInGame: participant.stats.visionWardsBoughtInGame,
-                      totalHeal: participant.stats.totalHeal,
-                      firstBlood: participant.stats.firstBloodKill,
-                      sightWardsBoughtInGame: participant.stats.sightWardsBoughtInGame,
-                      visionScore: participant.stats.visionScore,
+                      secondaryPerkIds: [participant.perks.styles[1].selections[0].perk, participant.perks.styles[1].selections[1].perk],
+                      goldEarned: participant.goldEarned,
+                      totalDamageTaken: participant.totalDamageTaken,
+                      neutralMinionsKilled: participant.neutralMinionsKilled,
+                      wardsKilled: participant.wardsKilled,
+                      wardsPlaced: participant.wardsPlaced,
+                      totalDamageDealtToChampions: participant.totalDamageDealtToChampions,
+                      totalMinionsKilled: participant.totalMinionsKilled,
+                      visionWardsBoughtInGame: participant.visionWardsBoughtInGame,
+                      totalHeal: participant.totalHeal,
+                      firstBlood: participant.firstBloodKill,
+                      sightWardsBoughtInGame: participant.sightWardsBoughtInGame,
+                      visionScore: participant.visionScore,
                     });
                   });
 
@@ -202,8 +211,7 @@ module.exports = (app: express.Application) =>
 
               if (indexExample === maxMatches) expressRes.send(player);
             });
-          })
-          .catch((error: AxiosError) => console.error(error));
+          });
       })
       .catch((error: AxiosError) => console.error(error));
   });

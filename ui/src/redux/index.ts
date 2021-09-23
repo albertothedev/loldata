@@ -20,14 +20,9 @@ const rootSlice = createSlice({
   name: "test",
   initialState,
   reducers: {
-    setLanguage: (
-      state,
-      action: PayloadAction<{ name: string; code: string; region: string }>
-    ) => void (state.language = action.payload),
-    setMode: (state, action: PayloadAction<any>) =>
-      void (state.mode = action.payload),
-    setRegion: (state, action: PayloadAction<any>) =>
-      void (state.region = action.payload),
+    setLanguage: (state, action: PayloadAction<{ name: string; code: string; region: string }>) => void (state.language = action.payload),
+    setMode: (state, action: PayloadAction<any>) => void (state.mode = action.payload),
+    setRegion: (state, action: PayloadAction<any>) => void (state.region = action.payload),
   },
 });
 
