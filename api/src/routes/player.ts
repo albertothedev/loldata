@@ -5,7 +5,7 @@ import { TPlayer } from "../types/index";
 
 const config = {
   headers: {
-    "X-Riot-Token": process.env.LOLDATA_API_KEY,
+    "X-Riot-Token": process.env.LOLDATA_API_KEY as string,
   },
 };
 const maxMatches = 5;
