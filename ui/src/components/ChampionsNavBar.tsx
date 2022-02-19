@@ -30,16 +30,14 @@ const ChampionsNavBar = ({
       <div className="championsNavBar__links">
         <NavLink
           to="/champions"
-          className="championsNavBar__links__link"
-          activeClassName="championsNavBar__links__link--active"
+          className={({ isActive }) => "championsNavBar__links__link" + (isActive ? " championsNavBar__links__link--active" : "")}
           onClick={() => dispatch(setMode("champions"))}
         >
           CHAMPIONS
         </NavLink>
         <NavLink
           to="/players"
-          className="championsNavBar__links__link"
-          activeClassName="championsNavBar__links__link--active"
+          className={({ isActive }) => "championsNavBar__links__link" + (isActive ? " championsNavBar__links__link--active" : "")}
           onClick={() => dispatch(setMode("players"))}
         >
           PLAYERS

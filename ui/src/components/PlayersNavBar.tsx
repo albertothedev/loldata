@@ -65,16 +65,14 @@ const PlayersNavBar = ({ searchPlayer }: PlayersNavBarProps): JSX.Element => {
       <div className="playersNavBar__links">
         <NavLink
           to="/champions"
-          className="playersNavBar__links__link"
-          activeClassName="playersNavBar__links__link--active"
+          className={({ isActive }) => "playersNavBar__links__link" + (isActive ? " playersNavBar__links__link--active" : "")}
           onClick={() => dispatch(setMode("champions"))}
         >
           CHAMPIONS
         </NavLink>
         <NavLink
           to="/players"
-          className="playersNavBar__links__link"
-          activeClassName="playersNavBar__links__link--active"
+          className={({ isActive }) => "playersNavBar__links__link" + (isActive ? " playersNavBar__links__link--active" : "")}
           onClick={() => dispatch(setMode("players"))}
         >
           PLAYERS
