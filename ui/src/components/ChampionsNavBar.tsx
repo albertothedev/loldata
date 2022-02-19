@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { languages } from "../assets/languages.json";
+import  languages  from "../assets/languages.json";
 import { setLanguage, RootState, setMode } from "../redux";
 
 type ChampionsNavBarProps = {
@@ -51,7 +51,7 @@ const ChampionsNavBar = ({
           {language.name} ({language.region})
         </button>
         <ul className="championsNavBar__languageSelector__languages">
-          {languages.map((language2: any, index: any) => (
+          {languages.languages.map((language2: any, index: any) => (
             <li
               key={index}
               className={`championsNavBar__languageSelector__languages__language ${
