@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 
@@ -11,7 +11,12 @@ import "normalize.css";
 import "./styles/main.scss";
 import store from "./redux";
 
-ReactDOM.render(
+const rootElement = document.getElementById("root");
+if (rootElement === null) throw new Error("Root container missing in index.html");
+
+const root = createRoot(rootElement);
+
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
@@ -24,6 +29,5 @@ ReactDOM.render(
         </Routes>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
