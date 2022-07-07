@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Match from "../components/Match";
 import defaultPlayer from "../assets/defaultPlayer.json";
@@ -18,6 +18,10 @@ import unranked from "../assets/ranked-emblems/unranked.png";
 
 const Players = (): JSX.Element => {
   const [player, setPlayer] = useState<any>(defaultPlayer);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [perks2, setPerks2] = useState<Array<any> | undefined>();
+  const [summonerSpells2, setSummonerSpells2] = useState<Array<any> | undefined>();
+  const [items2, setItems2] = useState<Array<any> | undefined>();
 
   const rankedEmblems: any = {
     silver,
@@ -30,6 +34,26 @@ const Players = (): JSX.Element => {
     platinum,
     gold,
   };
+
+  useEffect(() => {
+    (async () => {
+      const perksResponse = await fetch("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json");
+      const perksResponseParsed = await perksResponse.json();
+      setPerks2(perksResponseParsed);
+
+      const summonerSpellsResponse = await fetch(
+        "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/summoner-spells.json"
+      );
+      const summonerSpellsResponseParsed = await summonerSpellsResponse.json();
+      setSummonerSpells2(summonerSpellsResponseParsed);
+
+      const itemsResponse = await fetch("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/items.json");
+      const itemsResponseParsed = await itemsResponse.json();
+      setItems2(itemsResponseParsed);
+
+      setLoading(false);
+    })();
+  }, []);
 
   const addDots = (string: string) => Number(string).toLocaleString().replace(/,/g, ".");
 
@@ -119,9 +143,11 @@ const Players = (): JSX.Element => {
             ))}
           </div>
         )}
-        {player.matches.map((match: any, i: any) => (
-          <Match match={match} key={i} />
-        ))}
+
+        {!loading &&
+          player.matches.map((match: any, i: any) => (
+            <Match perks2={perks2} summonerSpells2={summonerSpells2} items2={items2} match={match} key={i} />
+          ))}
       </div>
     </div>
   );

@@ -11,10 +11,14 @@ const Champions = (): JSX.Element => {
   const { language } = useSelector((state: RootState) => state);
 
   const [champions, setChampions] = useState<Array<TChampionDescription>>([]);
+  const [champions2, setChampions2] = useState([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [filteredChampions, setFilteredChampions] = useState<Array<TChampionDescription> | null>(null);
+  const [filteredChampions2, setFilteredChampions2] = useState<any>();
   const [modal, setModal] = useState<TChampionDetails | null>(null);
 
   useEffect(() => {
+    console.log(language.code);
     axios
       .post(`${process.env.REACT_APP_LOLDATA_API_URL}/champions`, {
         code: language.code,
@@ -22,22 +26,51 @@ const Champions = (): JSX.Element => {
       .then((res: AxiosResponse) => {
         setChampions(Object.values(res.data));
         setFilteredChampions(Object.values(res.data));
+        console.log(res.data);
       });
   }, [language]);
 
-  const searchChampion = (value: string): void => {
-    let temporary = Object.values(champions).filter((champion: any) => champion.name.toLowerCase().startsWith(value.toLowerCase()));
-    setFilteredChampions(temporary);
-  };
+  useEffect(() => {
+    (async () => {
+      console.log("HI");
+
+      const championsResponse = await fetch(
+        `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/${language.code || "default"}/v1/champion-summary.json`
+      );
+      const championsResponseParsed = await championsResponse.json();
+      championsResponseParsed.shift();
+      // console.log(championsResponseParsed);
+      // console.log(championsResponseParsed[0].id);
+      // console.log(
+      //   `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/${championsResponseParsed[0].id}/${
+      //     championsResponseParsed[0].id + "000"
+      //   }.jpg`
+      // );
+      setChampions2(championsResponseParsed.sort((a: any, b: any) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0)));
+      setFilteredChampions2(championsResponseParsed);
+
+      setLoading(false);
+    })();
+  }, [language]);
+
+  const searchChampion = (value: string) =>
+    setFilteredChampions2(Object.values(champions2).filter((champion: any) => champion.name.toLowerCase().startsWith(value.toLowerCase())));
 
   const openModal = (championId: string): void => {
+    console.log("openModal()", championId);
     axios
       .post(`${process.env.REACT_APP_LOLDATA_API_URL}/champion`, {
         code: language.code,
         championId,
       })
-      .then((res: AxiosResponse) => setModal(res.data))
-      .catch((error: AxiosError) => console.error(error));
+      .then((res: AxiosResponse) => {
+        console.log("Client response", res.data);
+        setModal(res.data);
+      })
+      .catch((error: AxiosError) => {
+        console.log("Client error");
+        console.error(error);
+      });
   };
 
   return (
@@ -45,25 +78,24 @@ const Champions = (): JSX.Element => {
       <ChampionsNavBar searchChampion={(value: any) => searchChampion(value)} />
 
       <div className="champions">
-        {filteredChampions &&
-          filteredChampions.map((champion: any, index: any) => (
+        {!loading &&
+          filteredChampions2.map((champion: any, index: any) => (
             <div className="champions__champion" onClick={() => openModal(champion.id)} key={index}>
               <div className="champions__champion__filter">
                 <span
                   className="champions__champion__filter__name"
                   style={{
-                    backgroundImage: `url(http://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champion.id}_0.jpg)`,
+                    backgroundImage: `url(https://cdn.communitydragon.org/latest/champion/${champion.id}/portrait)`,
                     backgroundPosition: "center",
                   }}
                 >
                   {champion.name.toUpperCase()}
                 </span>
               </div>
+
               <img
                 className="champions__champion__image"
-                src={`
-        http://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champion.id}_0.jpg
-      `}
+                src={`https://cdn.communitydragon.org/latest/champion/${champion.id}/portrait`}
                 alt={champion.id}
               />
             </div>

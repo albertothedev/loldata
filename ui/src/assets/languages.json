@@ -1,6 +1,6 @@
 {
   "languages": [
-    { "code": "zh_CN", "name": "Chinese", "region": "China" },
+    { "code": "zh_cn", "name": "Chinese", "region": "China" },
     { "code": "zh_MY", "name": "Chinese", "region": "Malaysia" },
     { "code": "zh_TW", "name": "Chinese", "region": "Taiwan" },
     { "code": "cs_CZ", "name": "Czech", "region": "Czech Republic" },

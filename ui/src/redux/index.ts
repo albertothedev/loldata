@@ -10,7 +10,7 @@ const initialState: TInitialState = {
   mode: "champions",
   language: {
     name: "English",
-    code: "en_US",
+    code: "default",
     region: "United States",
   },
   region: { acronym: "EUW", code: "euw1" },

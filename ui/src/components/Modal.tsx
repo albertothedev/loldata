@@ -42,22 +42,25 @@ const Modal = ({ champion, close }: ModalProps): JSX.Element => {
             </div>
             <img
               className="modal__spotlight__splashArt__image"
+              // src={`
+              //   http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_${champion.skins[skinIndex].num}.jpg
+              // `}
               src={`
-                http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_${champion.skins[skinIndex].num}.jpg
-              `}
+              https://cdn.communitydragon.org/latest/champion/${champion.id}/splash-art/skin/${skinIndex}
+            `}
             />
           </div>
 
-          <p className="modal__spotlight__lore">{champion.lore}</p>
+          <p className="modal__spotlight__lore">{champion.shortBio}</p>
         </div>
 
         <div className="modal__info">
-          {champion.abilities.map((spell: any, index: any) => (
+          {/* {champion.abilities.map((spell: any, index: any) => (
             <div className="modal__info__ability" key={index}>
               <img
                 className="modal__info__ability__image"
                 src={`
-                http://ddragon.leagueoflegends.com/cdn/11.10.1/img/${spell.image.group}/${spell.image.full}
+                http://ddragon.leagueoflegends.com/cdn/12.4.1/img/${spell.image.group}/${spell.image.full}
               `}
                 alt=""
               />
@@ -73,9 +76,33 @@ const Modal = ({ champion, close }: ModalProps): JSX.Element => {
 
               <p className="modal__info__ability__description">{spell.description.replace(regExHTML, "")}</p>
             </div>
+          ))} */}
+          {[{ ...champion.passive, spellkey: "p" }, ...champion.spells].map((spell: any, index: any) => (
+            <div className="modal__info__ability" key={index}>
+              <img
+                className="modal__info__ability__image"
+                //   src={`
+                //   http://ddragon.leagueoflegends.com/cdn/12.4.1/img/${spell.image.group}/${spell.image.full}
+                // `}
+                src={`https://cdn.communitydragon.org/:patch/champion/:championKey/ability-icon/${spell.spellKey}`}
+                alt=""
+              />
+
+              <div className="modal__info__ability__header">
+                <h4 className="modal__info__ability__header__title">
+                  [{skillOrder[index]}] {spell.name}
+                </h4>
+                {spell.cooldown ? (
+                  // <span className="modal__info__ability__header__cooldown">{spell.cooldown.toString().replaceAll(",", " / ")}</span>
+                  <span className="modal__info__ability__header__cooldown">{spell.cooldownCoefficients.join(" / ")}</span>
+                ) : null}
+              </div>
+
+              <p className="modal__info__ability__description">{spell.description.replace(regExHTML, "")}</p>
+            </div>
           ))}
 
-          <div className="modal__info__stats">
+          {/* <div className="modal__info__stats">
             <img className="modal__info__stats__icon" src={health} />
             <span className="modal__info__stats__value">{champion.stats.hp}</span>
 
@@ -96,7 +123,7 @@ const Modal = ({ champion, close }: ModalProps): JSX.Element => {
 
             <img className="modal__info__stats__icon" src={magicresistance} />
             <span className="modal__info__stats__value">{champion.stats.spellblock}</span>
-          </div>
+          </div> */}
         </div>
 
         <button className="modal__close" onClick={close}>

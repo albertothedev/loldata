@@ -1,6 +1,3 @@
-import { spawn } from "child_process";
-import perks from "../assets/perks.json";
-import summonerSpells from "../assets/summonerSpells.json";
 import baron100 from "../assets/teams/baron-100.png";
 import baron200 from "../assets/teams/baron-200.png";
 import dragon100 from "../assets/teams/dragon-100.png";
@@ -14,12 +11,12 @@ import tower200 from "../assets/teams/tower-200.png";
 
 type MatchProps = {
   match: any;
+  perks2: any;
+  summonerSpells2: any;
+  items2: any;
 };
 
-const Match = ({ match }: MatchProps): JSX.Element => {
-  const perksExample: any = perks;
-  const summonerSpellsExample: any = summonerSpells;
-
+const Match = ({ match, perks2, summonerSpells2, items2 }: MatchProps): JSX.Element => {
   const minTommss = (minutes: any): any => {
     var sign = minutes < 0 ? "-" : "";
     var min = Math.floor(Math.abs(minutes));
@@ -47,6 +44,18 @@ const Match = ({ match }: MatchProps): JSX.Element => {
     }
     return newValue;
   };
+
+  const mapJsonPathToCdragonUrl = (path: string): string =>
+    `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/${path.split("/lol-game-data/assets/")[1].toLowerCase()}`;
+
+  const findPerkDetails = (perkId: string, perkKey: "shortDesc" | "name" | "iconPath"): string =>
+    perks2.find((perk2: any) => perk2.id === perkId)[perkKey];
+
+  const findSummonerSpellDetails = (summonerSpellId: string, summonerSpellKey: "shortDesc" | "name" | "iconPath"): string =>
+    summonerSpells2.find((summonerSpell2: any) => summonerSpell2.id === summonerSpellId)[summonerSpellKey];
+
+  const findItemDetails = (itemId: string, itemKey: "shortDesc" | "name" | "iconPath"): string =>
+    items2.find((item2: any) => item2.id === itemId)[itemKey];
 
   return (
     <div className="match">
@@ -101,7 +110,7 @@ const Match = ({ match }: MatchProps): JSX.Element => {
           summonerSpellId ? (
             <img
               className={`match__player__spell${i + 1}`}
-              src={`http://ddragon.leagueoflegends.com/cdn/11.10.1/img/spell/${summonerSpellsExample[summonerSpellId].image}`}
+              src={mapJsonPathToCdragonUrl(findSummonerSpellDetails(summonerSpellId, "iconPath"))}
               key={i}
             />
           ) : (
@@ -111,14 +120,14 @@ const Match = ({ match }: MatchProps): JSX.Element => {
 
         {match.playerStats.itemIds.map((itemId: any, i: any) =>
           itemId ? (
-            <img src={`https://ddragon.leagueoflegends.com/cdn/11.10.1/img/item/${itemId}.png`} className={`match__player__item${i + 1}`} key={i} />
+            <img src={mapJsonPathToCdragonUrl(findItemDetails(itemId, "iconPath"))} className={`match__player__item${i + 1}`} key={i} />
           ) : (
             <span className={`match__player__item${i + 1} match__player__item${i + 1}--missing`} key={i}></span>
           )
         )}
 
         {match.playerStats.trinket ? (
-          <img src={`https://ddragon.leagueoflegends.com/cdn/11.10.1/img/item/${match.playerStats.trinket}.png`} className="match__player__trinket" />
+          <img src={mapJsonPathToCdragonUrl(findItemDetails(match.playerStats.trinket, "iconPath"))} className="match__player__trinket" />
         ) : (
           <span className="match__player__trinket match__player__trinket--missing"></span>
         )}
@@ -126,10 +135,8 @@ const Match = ({ match }: MatchProps): JSX.Element => {
         {match.playerStats.primaryPerkIds.map((primaryPerkId: any, i: any) =>
           match.playerStats.perkPrimaryStyle && primaryPerkId ? (
             <img
-              src={`https://ddragon.leagueoflegends.com/cdn/img/${perksExample[match.playerStats.perkPrimaryStyle].perks[primaryPerkId].icon}`}
-              title={`${perksExample[match.playerStats.perkPrimaryStyle].perks[primaryPerkId].name}: ${
-                perksExample[match.playerStats.perkPrimaryStyle].perks[primaryPerkId].shortDesc
-              }`}
+              src={mapJsonPathToCdragonUrl(findPerkDetails(primaryPerkId, "iconPath"))}
+              title={`${findPerkDetails(primaryPerkId, "name")}: ${findPerkDetails(primaryPerkId, "shortDesc")}`}
               className={`match__player__primaryPerk${i + 1}`}
               key={i}
             />
@@ -141,10 +148,8 @@ const Match = ({ match }: MatchProps): JSX.Element => {
         {match.playerStats.secondaryPerkIds.map((secondaryPerkId: any, i: any) =>
           match.playerStats.perkSecondaryStyle && secondaryPerkId ? (
             <img
-              src={`https://ddragon.leagueoflegends.com/cdn/img/${perksExample[match.playerStats.perkSecondaryStyle].perks[secondaryPerkId].icon}`}
-              title={`${perksExample[match.playerStats.perkSecondaryStyle].perks[secondaryPerkId].name}: ${
-                perksExample[match.playerStats.perkSecondaryStyle].perks[secondaryPerkId].shortDesc
-              }`}
+              src={mapJsonPathToCdragonUrl(findPerkDetails(secondaryPerkId, "iconPath"))}
+              title={`${findPerkDetails(secondaryPerkId, "name")}: ${findPerkDetails(secondaryPerkId, "shortDesc")}`}
               className={`match__player__secondaryPerk${i + 1}`}
               key={i}
             />
@@ -156,8 +161,8 @@ const Match = ({ match }: MatchProps): JSX.Element => {
         {match.playerStats.statPerkIds.map((statPerkId: any, i: any) =>
           statPerkId ? (
             <img
-              src={`https://ddragon.leagueoflegends.com/cdn/img/${perksExample[statPerkId].icon}`}
-              title={`${perksExample[statPerkId].name}: ${perksExample[statPerkId].shortDesc}`}
+              src={mapJsonPathToCdragonUrl(findPerkDetails(statPerkId, "iconPath"))}
+              title={`${findPerkDetails(statPerkId, "name")}: ${findPerkDetails(statPerkId, "shortDesc")}`}
               className={`match__player__statPerk${i + 1}`}
               key={i}
             />
@@ -269,7 +274,7 @@ const Match = ({ match }: MatchProps): JSX.Element => {
                     summonerSpellId ? (
                       <img
                         className={`match__teams__team__participants__participant__spell${i + 1}`}
-                        src={`http://ddragon.leagueoflegends.com/cdn/11.10.1/img/spell/${summonerSpellsExample[summonerSpellId].image}`}
+                        src={mapJsonPathToCdragonUrl(findSummonerSpellDetails(summonerSpellId, "iconPath"))}
                         key={i}
                       />
                     ) : (
@@ -285,7 +290,7 @@ const Match = ({ match }: MatchProps): JSX.Element => {
                   {participant.itemIds.map((itemId: any, i: any) =>
                     itemId ? (
                       <img
-                        src={`https://ddragon.leagueoflegends.com/cdn/11.10.1/img/item/${itemId}.png`}
+                        src={mapJsonPathToCdragonUrl(findItemDetails(itemId, "iconPath"))}
                         className={`match__teams__team__participants__participant__item${i + 1}`}
                         key={i}
                       />
@@ -301,7 +306,7 @@ const Match = ({ match }: MatchProps): JSX.Element => {
 
                   {participant.trinket ? (
                     <img
-                      src={`https://ddragon.leagueoflegends.com/cdn/11.10.1/img/item/${participant.trinket}.png`}
+                      src={mapJsonPathToCdragonUrl(findItemDetails(participant.trinket, "iconPath"))}
                       className="match__teams__team__participants__participant__trinket"
                     />
                   ) : (
@@ -311,10 +316,8 @@ const Match = ({ match }: MatchProps): JSX.Element => {
                   {participant.primaryPerkIds.map((primaryPerkId: any, i: any) =>
                     participant.perkPrimaryStyle && primaryPerkId ? (
                       <img
-                        src={`https://ddragon.leagueoflegends.com/cdn/img/${perksExample[participant.perkPrimaryStyle].perks[primaryPerkId].icon}`}
-                        title={`${perksExample[participant.perkPrimaryStyle].perks[primaryPerkId].name}: ${
-                          perksExample[participant.perkPrimaryStyle].perks[primaryPerkId].shortDesc
-                        }`}
+                        src={mapJsonPathToCdragonUrl(findPerkDetails(primaryPerkId, "iconPath"))}
+                        title={`${findPerkDetails(primaryPerkId, "name")}: ${findPerkDetails(primaryPerkId, "shortDesc")}`}
                         className={`match__teams__team__participants__participant__primaryPerk${i + 1}`}
                         key={i}
                       />
@@ -331,12 +334,8 @@ const Match = ({ match }: MatchProps): JSX.Element => {
                   {participant.secondaryPerkIds.map((secondaryPerkId: any, i: any) =>
                     participant.perkSecondaryStyle && secondaryPerkId ? (
                       <img
-                        src={`https://ddragon.leagueoflegends.com/cdn/img/${
-                          perksExample[participant.perkSecondaryStyle].perks[secondaryPerkId].icon
-                        }`}
-                        title={`${perksExample[participant.perkSecondaryStyle].perks[secondaryPerkId].name}: ${
-                          perksExample[participant.perkSecondaryStyle].perks[secondaryPerkId].shortDesc
-                        }`}
+                        src={mapJsonPathToCdragonUrl(findPerkDetails(secondaryPerkId, "iconPath"))}
+                        title={`${findPerkDetails(secondaryPerkId, "name")}: ${findPerkDetails(secondaryPerkId, "shortDesc")}`}
                         className={`match__teams__team__participants__participant__secondaryPerk${i + 1}`}
                         key={i}
                       />
@@ -353,8 +352,8 @@ const Match = ({ match }: MatchProps): JSX.Element => {
                   {participant.statPerkIds.map((statPerkId: any, i: any) =>
                     statPerkId ? (
                       <img
-                        src={`https://ddragon.leagueoflegends.com/cdn/img/${perksExample[statPerkId].icon}`}
-                        title={`${perksExample[statPerkId].name}: ${perksExample[statPerkId].shortDesc}`}
+                        src={mapJsonPathToCdragonUrl(findPerkDetails(statPerkId, "iconPath"))}
+                        title={`${findPerkDetails(statPerkId, "name")}: ${findPerkDetails(statPerkId, "shortDesc")}`}
                         className={`match__teams__team__participants__participant__statPerk${i + 1}`}
                         key={i}
                       />
